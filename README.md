@@ -6,7 +6,7 @@
 This Spring Boot application calculates reward points based on customer purchases:
 - 2 points for every dollar spent over $100.
 - 1 point for every dollar spent between $50 and $100.
-Example: A $120 purchase earns `90 points`.
+Example: A $120 purchase earns 90 points.
 
 ## API Endpoints
 
@@ -57,4 +57,4 @@ GET /api/rewards/{customerId}/dateRange?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD*
    mvn clean install
    mvn spring-boot:run
    ```
-3. App runs at: `http://localhost:8080`
+3. App runs at: http://localhost:8080
