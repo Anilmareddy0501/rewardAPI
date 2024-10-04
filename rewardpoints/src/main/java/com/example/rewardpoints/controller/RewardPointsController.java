@@ -1,5 +1,6 @@
 package com.example.rewardpoints.controller;
 
+import com.example.rewardpoints.exception.ResourceNotFoundException;
 import com.example.rewardpoints.model.RewardPointsSummary;
 import com.example.rewardpoints.service.RewardPointsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,27 +9,36 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/rewards")
 public class RewardPointsController {
 
-    @Autowired
-    private RewardPointsService rewardPointsService;
+    private final RewardPointsService rewardPointsService;
 
+    // Constructor-based dependency injection
+    public RewardPointsController(RewardPointsService rewardPointsService) {
+        this.rewardPointsService = rewardPointsService;
+    }
 
     @GetMapping
     public List<RewardPointsSummary> getAllRewardPoints() {
         return rewardPointsService.calculateRewards();
     }
 
-
-    @GetMapping("/{customerId}")
+    /*@GetMapping("/{customerId}")
     public RewardPointsSummary getRewardPointsByCustomer(@PathVariable String customerId) {
         return rewardPointsService.calculateRewards().stream()
                 .filter(summary -> summary.getCustomerId().equalsIgnoreCase(customerId))
                 .findFirst()
                 .orElse(null);
+    }*/
+
+    @GetMapping("/{customerId}")
+    public RewardPointsSummary getRewardPointsByCustomer(@PathVariable String customerId) throws ResourceNotFoundException {
+        return rewardPointsService.calculateRewards().stream()
+                .filter(summary -> summary.getCustomerId().equalsIgnoreCase(customerId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with ID " + customerId + " not found"));
     }
 
 
